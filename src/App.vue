@@ -10,7 +10,7 @@
           <Logo />
 
           <!-- The Menu of the application (component) Switching the language  -->
-          <Menu @switchLanguage="setLocale($event)" />
+          <Menu @switchLanguage="setLocale($event)" :menuVisible="menuVisible" />
         </div>
 
         <div class="lg:grid lg:grid-cols-2 lg:gap-6">
@@ -25,6 +25,10 @@
             <base-date
               :year="this.$dayjs().format('YYYY')"
               :date="this.$dayjs().format('DD MMMM')"
+              :current="this.current"
+              @menuVisible="setMenuVisible($event)"
+              @switchLanguage="setLocale($event)"
+              @formatDate="formatDate($event)"
               class="mt-8"
             ></base-date>
             <!-- This Base Cards show the next sifir and iftar (component) The information comes from the data. The data is calculated from getToday() -->
@@ -130,7 +134,8 @@ export default {
       },
       modified: null,
       schedule: json.schedule,
-      location: json.city
+      location: json.city,
+      menuVisible: true
     };
   },
   methods: {
@@ -159,6 +164,9 @@ export default {
      * This is used for the base table component
      */
     formatDate(item) {
+      console.log("formatDate App.vue", item)
+            console.log("this.current.city.value", this.$dayjs(item))
+
       return this.$dayjs(item)
         .add(this.current.city.value, "minute")
         .format("HH:mm");
@@ -257,6 +265,12 @@ export default {
       this.language = string;
       this.$dayjs.locale(string);
       localStorage.setItem("language", string);
+    },
+
+
+    // When the window with 5 times appear, hide menu icon
+    setMenuVisible(boolean) {
+      this.menuVisible = boolean;
     }
   },
   watch: {

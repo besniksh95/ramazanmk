@@ -2,6 +2,7 @@
   <div>
     <div
       @click="menu = !menu"
+      v-show="menuVisible"
       class="w-10 h-10 z-20 rounded-full bg-white shadow-input flex items-center justify-center cursor-pointer relative"
     >
       <icon name="menu" class="w-6 h-6 text-primary"></icon>
@@ -52,6 +53,12 @@
 
 <script>
 export default {
+  props: {
+    menuVisible: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       menu: false
